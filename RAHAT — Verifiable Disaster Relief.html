@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>RAHAT — Verifiable Disaster Relief</title>
+    <style>
+      :root {
+        --bg: #f4f6f9;
+        --sf: #fff;
+        --tx: #0b1220;
+        --mu: #5b6678;
+        --bd: #e1e6ee;
+        --nv: #0b1220;
+        --ac: #0ea5b7;
+        --wa: #d98a06;
+        --cr: #d92d20;
+        --ok: #12874a;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0a0f1a;
+          --sf: #111a2b;
+          --tx: #e8edf5;
+          --mu: #8b97ab;
+          --bd: #22304a;
+          --nv: #060a12;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--tx);
+        font:
+          14px/1.45 Inter,
+          Geist,
+          system-ui,
+          sans-serif;
+      }
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+      nav {
+        width: 216px;
+        background: var(--nv);
+        color: #cfd8e6;
+        padding: 18px 12px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+      }
+      nav b {
+        color: #fff;
+        font-size: 18px;
+        letter-spacing: 0.14em;
+        padding: 0 8px;
+      }
+      nav small {
+        display: block;
+        padding: 0 8px 16px;
+        color: #7f8da3;
+      }
+      nav button {
+        all: unset;
+        display: block;
+        padding: 9px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #cfd8e6;
+      }
+      nav button:hover {
+        background: #17233a;
+      }
+      nav button.on {
+        background: #13304a;
+        color: #fff;
+        box-shadow: inset 2px 0 var(--ac);
+      }
+      .st {
+        margin-top: auto;
+        padding: 10px;
+        font-size: 12px;
+        color: #8fa0b8;
+        border-top: 1px solid #1d2a42;
+      }
+      main {
+        flex: 1;
+        padding: 24px;
+        max-width: 1200px;
+        min-width: 0;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 0 0 2px;
+      }
+      h2 {
+        font-size: 14px;
+        margin: 0 0 10px;
+      }
+      .mu {
+        color: var(--mu);
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+      .card {
+        background: var(--sf);
+        border: 1px solid var(--bd);
+        border-radius: 6px;
+        padding: 16px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+      .k {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+      }
+      .two {
+        grid-template-columns: 1.4fr 1fr;
+      }
+      .kpi .n {
+        font-size: 26px;
+        font-weight: 650;
+        font-variant-numeric: tabular-nums;
+      }
+      .kpi.big {
+        background: var(--nv);
+        color: #fff;
+        border: 0;
+      }
+      .kpi.big .n {
+        font-size: 38px;
+        color: #5fe0ee;
+      }
+      .lb {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        color: var(--mu);
+        text-transform: uppercase;
+      }
+      .big .lb {
+        color: #8fa0b8;
+      }
+      button.b,
+      select,
+      input {
+        font: inherit;
+        padding: 8px 12px;
+        border: 1px solid var(--bd);
+        border-radius: 5px;
+        background: var(--sf);
+        color: var(--tx);
+      }
+      button.b {
+        cursor: pointer;
+      }
+      button.p {
+        background: var(--ac);
+        color: #04222a;
+        border-color: var(--ac);
+        font-weight: 600;
+      }
+      button.d {
+        color: var(--cr);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        text-align: left;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--mu);
+        text-transform: uppercase;
+      }
+      td,
+      th {
+        padding: 9px 8px;
+        border-bottom: 1px solid var(--bd);
+      }
+      .tag {
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .ok {
+        background: #12874a22;
+        color: var(--ok);
+      }
+      .wa {
+        background: #d98a0622;
+        color: var(--wa);
+      }
+      .cr {
+        background: #d92d2022;
+        color: var(--cr);
+      }
+      .bar {
+        height: 8px;
+        background: var(--bd);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--ac);
+        transition: width 0.3s;
+      }
+      .mono {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 12px;
+      }
+      .hash {
+        word-break: break-all;
+        color: var(--mu);
+      }
+      .chain {
+        border-left: 2px solid var(--ac);
+        padding-left: 14px;
+        margin: 0 0 12px;
+      }
+      .chain.bad {
+        border-color: var(--cr);
+      }
+      .form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 10px;
+        align-items: end;
+      }
+      .form label {
+        display: block;
+        font-size: 12px;
+        color: var(--mu);
+      }
+      .form input,
+      .form select {
+        width: 100%;
+      }
+      .ban {
+        padding: 10px 14px;
+        border-radius: 5px;
+        margin-bottom: 12px;
+      }
+      .off {
+        background: #d98a0622;
+        color: var(--wa);
+      }
+      .hero {
+        background: linear-gradient(120deg, #0b1220, #0f2b3d);
+        color: #fff;
+        border: 0;
+      }
+      .flow {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .flow span {
+        padding: 6px 12px;
+        border: 1px solid #2a4660;
+        border-radius: 4px;
+      }
+      .flow em {
+        color: #5fe0ee;
+        font-style: normal;
+      }
+      #toast {
+        position: fixed;
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        background: var(--nv);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 5px;
+        opacity: 0;
+        transition: opacity 0.2s;
+        max-width: 80vw;
+        z-index: 9;
+      }
+      @media (max-width: 820px) {
+        .app {
+          flex-direction: column;
+        }
+        nav {
+          width: 100%;
+          height: auto;
+          position: sticky;
+          flex-direction: row;
+          overflow-x: auto;
+          padding: 8px;
+          z-index: 5;
+          top: 0;
+        }
+        nav small,
+        .st,
+        nav b {
+          display: none;
+        }
+        nav button {
+          white-space: nowrap;
+          padding: 12px;
+        }
+        .k,
+        .two {
+          grid-template-columns: 1fr 1fr;
+        }
+        .two {
+          grid-template-columns: 1fr;
+        }
+        main {
+          padding: 14px;
+        }
+        .tbl {
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <nav id="nav"></nav>
+      <main id="v"></main>
+    </div>
+    <div id="toast"></div>
+    <script>
+      const $ = (s) => document.querySelector(s);
+      const V = [
+        ["Command Center", "cc"],
+        ["Beneficiaries", "bn"],
+        ["Verification", "dp"],
+        ["Aid Distribution", "ad"],
+        ["Audit Ledger", "lg"],
+        ["Transparency", "tr"],
+      ];
+      let online = true,
+        tab = "cc",
+        q = "";
+      let HH = [
+        [
+          "RH-KHP-7F92A1",
+          "Fatima Bibi",
+          "Village A",
+          6,
+          "Verified",
+          "Food Package",
+        ],
+        ["RH-KHP-882A91", "Fatema Bibi", "Village B", 6, "Pending", "—"],
+        [
+          "RH-KHP-3C10D4",
+          "Ghulam Hussain",
+          "Village C",
+          5,
+          "Verified",
+          "Water",
+        ],
+        [
+          "RH-KHP-91B7E2",
+          "Zainab Khatoon",
+          "Village A",
+          8,
+          "Verified",
+          "Shelter Kit",
+        ],
+        [
+          "RH-KHP-5D44A0",
+          "Imran Shaikh",
+          "Village B",
+          4,
+          "Verified",
+          "Medicine",
+        ],
+        [
+          "RH-KHP-A21F68",
+          "Sakina Mai",
+          "Village D",
+          7,
+          "Pending",
+          "Food Package",
+        ],
+        ["RH-KHP-17E3B9", "Abdul Rehman", "Village C", 3, "Verified", "Water"],
+        [
+          "RH-KHP-60C9F5",
+          "Mehrunisa",
+          "Village D",
+          5,
+          "Verified",
+          "Shelter Kit",
+        ],
+      ].map((a) => ({ id: a[0], n: a[1], v: a[2], m: a[3], s: a[4], l: a[5] }));
+      let AID = { Food: 12410, Water: 9120, Shelter: 5230, Medicine: 4444 };
+      let L = [],
+        Q = JSON.parse(localStorage.getItem("rahatQ") || "[]");
+      const saveQ = () => {
+        try {
+          localStorage.setItem("rahatQ", JSON.stringify(Q));
+        } catch (e) {}
+      };
+      async function sha(s) {
+        const b = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(s),
+        );
+        return [...new Uint8Array(b)]
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join("");
+      }
+      const canon = (r) =>
+        JSON.stringify({
+          id: r.id,
+          actor: r.actor,
+          action: r.action,
+          ts: r.ts,
+          prev: r.prev,
+        });
+      async function log(actor, action) {
+        const prev = L.length ? L[L.length - 1].hash : "GENESIS";
+        const r = {
+          id: "TX-" + (1001 + L.length),
+          actor,
+          action,
+          ts: new Date().toISOString().slice(11, 19),
+          prev,
+        };
+        r.hash = await sha(canon(r));
+        L.push(r);
+        return r;
+      }
+      async function verify() {
+        let p = "GENESIS";
+        for (let i = 0; i < L.length; i++) {
+          if (L[i].prev !== p || (await sha(canon(L[i]))) !== L[i].hash)
+            return { valid: false, at: L[i].id, n: i + 1 };
+          p = L[i].hash;
+        }
+        return { valid: true, n: L.length };
+      }
+      function toast(m) {
+        const t = $("#toast");
+        t.textContent = m;
+        t.style.opacity = 1;
+        setTimeout(() => (t.style.opacity = 0), 2600);
+      }
+      const tag = (s) =>
+        `<span class="tag ${s == "Verified" ? "ok" : "wa"}">${s}</span>`;
+      function shell() {
+        $("#nav").innerHTML =
+          `<b>RAHAT</b><small>Relief Intelligence</small>` +
+          V.map(
+            (x) =>
+              `<button class="${tab == x[1] ? "on" : ""}" onclick="go('${x[1]}')">${x[0]}</button>`,
+          ).join("") +
+          `<div class="st">Field Coordinator · NGO_ADMIN<br>${online ? "● Online" : "○ Offline"} · Pending sync: ${Q.length}</div>`;
+      }
+      function go(t) {
+        tab = t;
+        render();
+      }
+      function cc() {
+        const tot = Object.values(AID).reduce((a, b) => a + b, 0),
+          mx = Math.max(...Object.values(AID));
+        return `<div class="card hero"><div class="lb" style="color:#8fa0b8">Khairpur Disaster Response Network</div><h1 style="font-size:28px">One Family. One Verifiable Relief Record.<br>Every Aid Accountable.</h1>
+<div class="flow"><span>Families</span><em>→</em><span>Verification</span><em>→</em><span>Aid</span><em>→</em><span>Audit</span></div></div><br>
+<div class="grid k"><div class="card kpi big"><div class="lb">Registered families</div><div class="n">${12842 + HH.length - 8}</div></div>
+<div class="card kpi"><div class="lb">Verified</div><div class="n">${10931 + HH.filter((h) => h.s == "Verified").length - 6}</div></div>
+<div class="card kpi"><div class="lb">Aid transactions</div><div class="n">${(31204 + L.length).toLocaleString()}</div></div>
+<div class="card kpi"><div class="lb">Possible duplicates</div><div class="n" style="color:var(--wa)">481</div></div></div><br>
+<div class="grid two"><div class="card"><h2>Aid distribution (all villages)</h2>${Object.entries(
+          AID,
+        )
+          .map(
+            ([k, v]) =>
+              `<div style="margin:10px 0"><div style="display:flex;justify-content:space-between"><span>${k}</span><span class="mono">${v.toLocaleString()}</span></div><div class="bar"><i style="width:${(v / mx) * 100}%"></i></div></div>`,
+          )
+          .join(
+            "",
+          )}<div class="mu">Total ${tot.toLocaleString()} · Demo data</div></div>
+<div class="card"><h2>Priority alerts</h2><p>⚠ 7 duplicate clusters need verification</p><p>⚠ 13 transactions awaiting review</p><p style="color:var(--ok)">✓ ${Q.length ? Q.length + " offline records pending" : "All offline transactions synchronized"}</p><p>ℹ 42 families recently relocated</p><button class="b p" onclick="go('dp')">Review matches</button></div></div><br>
+<div class="card"><h2>Recent activity</h2>${
+          L.length
+            ? L.slice(-4)
+                .reverse()
+                .map(
+                  (r) =>
+                    `<p><span class="mono">${r.ts}</span> · ${r.action}</p>`,
+                )
+                .join("")
+            : `<p class="mu">No live actions yet — try Aid Distribution.</p>`
+        }</div>`;
+      }
+      function bn() {
+        const r = HH.filter((h) =>
+          (h.n + h.id + h.v).toLowerCase().includes(q.toLowerCase()),
+        );
+        return `<div class="top"><div><h1>Beneficiaries</h1><span class="mu">Privacy-minimised household records (demo data)</span></div><div><input id="s" placeholder="Search name, village, ID" value="${q}" oninput="q=this.value;render(1)"> <button class="b p" onclick="reg()">+ Register family</button></div></div>
+<div class="card tbl"><table><tr><th>Relief ID</th><th>Household</th><th>Location</th><th>Members</th><th>Verification</th><th>Last aid</th></tr>${r.map((h) => `<tr><td class="mono">${h.id}</td><td>${h.n}</td><td>${h.v}</td><td>${h.m}</td><td>${tag(h.s)}</td><td>${h.l}</td></tr>`).join("") || `<tr><td colspan=6 class="mu">No matching households.</td></tr>`}</table></div>`;
+      }
+      async function reg() {
+        const n = prompt("Household head name");
+        if (!n) return;
+        const dup = HH.find((h) => sim(h.n, n) > 0.8);
+        if (
+          dup &&
+          !confirm(
+            `Possible existing household detected (${Math.round(sim(dup.n, n) * 100)}% match with ${dup.id}).\nHuman verification required. Register anyway as Pending?`,
+          )
+        )
+          return;
+        const id =
+          "RH-KHP-" + Math.random().toString(16).slice(2, 8).toUpperCase();
+        HH.unshift({ id, n, v: "Village A", m: 5, s: "Pending", l: "—" });
+        await log("ngo.worker", "Household registered " + id);
+        toast("Relief ID generated: " + id);
+        render();
+      }
+      function sim(a, b) {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        const m = [],
+          d = (x, y) => {
+            const t = Array.from({ length: x.length + 1 }, (_, i) => [
+              i,
+              ...Array(y.length).fill(0),
+            ]);
+            for (let j = 1; j <= y.length; j++) t[0][j] = j;
+            for (let i = 1; i <= x.length; i++)
+              for (let j = 1; j <= y.length; j++)
+                t[i][j] = Math.min(
+                  t[i - 1][j] + 1,
+                  t[i][j - 1] + 1,
+                  t[i - 1][j - 1] + (x[i - 1] == y[j - 1] ? 0 : 1),
+                );
+            return t[x.length][y.length];
+          };
+        return 1 - d(a, b) / Math.max(a.length, b.length);
+      }
+      let dpDone = null;
+      function dp() {
+        return `<div class="top"><div><h1>Identity Verification Intelligence</h1><span class="mu">AI flags potential duplicates. A human verifier makes the final decision.</span></div></div>
+<div class="card"><span class="tag wa">POTENTIAL MATCH</span><div class="kpi"><div class="n" style="color:var(--wa)">93%</div></div>
+<div class="grid" style="grid-template-columns:1fr 1fr;margin:10px 0"><div class="card"><div class="mono">RH-KHP-7F92A1</div><b>Fatima Bibi</b><br><span class="mu">NGO A · Village A · 6 members</span></div><div class="card"><div class="mono">RH-KHP-882A91</div><b>Fatema Bibi</b><br><span class="mu">NGO B · Village B · 6 members</span></div></div>
+<p>✓ Similar household name (${Math.round(sim("Fatima Bibi", "Fatema Bibi") * 100)}% string similarity)<br>✓ Same previous village<br>✓ Same household size<br>✓ Similar identity information</p>
+${dpDone ? `<p class="tag ${dpDone[1]}">${dpDone[0]}</p>` : `<button class="b" onclick="dr('Review opened','wa')">Review match</button> <button class="b p" onclick="dr('Confirmed same household — records linked, none merged','ok')">Confirm same household</button> <button class="b" onclick="dr('Marked different households','ok')">Mark different</button>`}</div>`;
+      }
+      async function dr(t, c) {
+        dpDone = [t, c];
+        await log("verifier.sana", "Duplicate review: " + t);
+        toast("Decision recorded in audit ledger");
+        render();
+      }
+      function ad() {
+        return `<div class="top"><div><h1>Aid Distribution</h1><span class="mu">Offline-first: records queue locally and sync automatically.</span></div><button class="b" onclick="toggle()">${online ? "Go offline" : "Reconnect"}</button></div>
+${online ? "" : `<div class="ban off"><b>OFFLINE MODE</b> — No internet connection. Your records will synchronize automatically.</div>`}
+<div class="card"><div class="form"><div><label>Relief ID</label><select id="rid">${HH.map((h) => `<option>${h.id}</option>`).join("")}</select></div><div><label>Aid type</label><select id="at">${Object.keys(
+          AID,
+        )
+          .map((k) => `<option>${k}</option>`)
+          .join(
+            "",
+          )}</select></div><div><label>Quantity</label><input id="qt" type="number" value="1" min="1"></div><button class="b p" onclick="dist()">Record distribution</button></div></div><br>
+<div class="card"><h2>Pending synchronization: ${Q.length}</h2>${Q.map((x) => `<p class="mono">${x.rid} · ${x.at} ×${x.qt} · ${x.t}</p>`).join("")}${Q.length && online ? `<button class="b p" onclick="sync()">Synchronize now</button>` : ""}<div id="sy"></div></div>`;
+      }
+      function toggle() {
+        online = !online;
+        if (online && Q.length) sync();
+        else render();
+      }
+      async function dist() {
+        const x = {
+          rid: $("#rid").value,
+          at: $("#at").value,
+          qt: +$("#qt").value || 1,
+          t: new Date().toLocaleTimeString(),
+        };
+        if (!online) {
+          Q.push(x);
+          saveQ();
+          toast("Saved locally. Pending sync: " + Q.length);
+          return render();
+        }
+        await commit(x, "ngo.worker");
+        render();
+      }
+      async function commit(x, who) {
+        AID[x.at] += x.qt;
+        const h = HH.find((h) => h.id == x.rid);
+        if (h) h.l = x.at;
+        const r = await log(who, `${x.at} ×${x.qt} → ${x.rid}`);
+        toast(`✓ ${r.id} recorded · audit entry created · history updated`);
+      }
+      async function sync() {
+        render();
+        const el = $("#sy"),
+          n = Q.length;
+        for (let i = 0; i < n; i++) {
+          el.innerHTML = `<p>Synchronizing… ${i + 1}/${n}</p><div class="bar"><i style="width:${((i + 1) / n) * 100}%"></i></div>`;
+          await new Promise((r) => setTimeout(r, 500));
+          await commit(Q.shift(), "field.worker (synced)");
+          saveQ();
+        }
+        el.innerHTML = `<p style="color:var(--ok)">✓ Sync complete — ${n}/${n} records uploaded</p>`;
+        shell();
+      }
+      async function lg() {
+        const v = await verify();
+        return `<div class="top"><div><h1>Tamper-Evident Relief Ledger</h1><span class="mu">Append-only SHA-256 hash chain — not a public blockchain.</span></div><div><button class="b p" onclick="chk()">Verify integrity</button> <button class="b d" onclick="tamper()">Simulate tampering</button></div></div>
+<div class="ban ${v.valid ? "" : "off"}" style="${v.valid ? "background:#12874a22;color:var(--ok)" : "background:#d92d2022;color:var(--cr)"}">${v.valid ? `✓ VERIFIED — ${v.n} records checked` : `⚠ LEDGER INTEGRITY WARNING — broken at ${v.at}. This record differs from its original cryptographic state.`}</div>
+${L.length ? L.map((r) => `<div class="chain ${!v.valid && r.id == v.at ? "bad" : ""}"><b>${r.id}</b> · ${r.actor} · ${r.ts}<br>${r.action}<div class="hash mono">prev ${r.prev.slice(0, 24)}…<br>hash ${r.hash}</div></div>`).join("") : `<div class="card mu">Ledger is empty. Register a family or record aid to create entries.</div>`}`;
+      }
+      async function chk() {
+        render();
+      }
+      async function tamper() {
+        if (L.length < 2)
+          return toast("Create at least 2 ledger entries first");
+        L[1].action += " [EDITED: quantity 5 → 500]";
+        toast("Historical record modified without re-hashing");
+        render();
+      }
+      function tr() {
+        const f = HH.length + 12834,
+          tot = Object.values(AID).reduce((a, b) => a + b, 0);
+        return `<div class="top"><div><h1>Khairpur Relief Transparency</h1><span class="mu">Public view · aggregated only · no personal information · Last updated: October 1, 2026</span></div></div>
+<div class="grid k"><div class="card kpi big"><div class="lb">Families assisted</div><div class="n">${f.toLocaleString()}</div></div><div class="card kpi"><div class="lb">Aid distributed</div><div class="n">${tot.toLocaleString()}</div></div><div class="card kpi"><div class="lb">Villages covered</div><div class="n">4</div></div><div class="card kpi"><div class="lb">Transactions audited</div><div class="n">${(31204 + L.length).toLocaleString()}</div></div></div><br>
+<div class="card"><h2>Shelter coverage by village</h2>${[
+          ["Village A", 217, 63],
+          ["Village B", 143, 31],
+          ["Village C", 98, 19],
+          ["Village D", 120, 88],
+        ]
+          .map(
+            (a) =>
+              `<div style="margin:10px 0"><div style="display:flex;justify-content:space-between"><span>${a[0]}</span><span class="mu">${a[2]} / ${a[1]} verified families</span></div><div class="bar"><i style="width:${(a[2] / a[1]) * 100}%;background:${a[2] / a[1] < 0.3 ? "var(--wa)" : "var(--ac)"}"></i></div></div>`,
+          )
+          .join(
+            "",
+          )}<div class="mu">Provenance: RAHAT audit ledger · DEMO DATA, not real relief statistics.</div></div>`;
+      }
+      async function render(keep) {
+        shell();
+        const m = { cc, bn, dp, ad, lg, tr }[tab];
+        const h = await m();
+        $("#v").innerHTML = h;
+        if (keep) {
+          const s = $("#s");
+          if (s) {
+            s.focus();
+            s.setSelectionRange(q.length, q.length);
+          }
+        }
+      }
+      (async () => {
+        await log(
+          "system",
+          "Genesis: Khairpur Flood Relief campaign opened (demo)",
+        );
+        await log("verifier.sana", "Household verified RH-KHP-7F92A1");
+        await log("field.worker", "Food Package ×1 → RH-KHP-7F92A1");
+        render();
+      })();
+    </script>
+  </body>
+</html>

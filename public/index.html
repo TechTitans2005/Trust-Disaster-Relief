@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="RAHAT verifiable disaster relief coordination dashboard" />
+    <meta name="theme-color" content="#123f33" />
+    <title>RAHAT — Verifiable Disaster Relief</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="/assets/rahat-relief-hero.png" fetchpriority="high" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#home" aria-label="RAHAT home">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span><strong>RAHAT</strong><small>Relief intelligence</small></span>
+        </a>
+        <nav class="primary-nav" id="navigation" aria-label="Main navigation"></nav>
+        <div class="user-panel">
+          <div class="avatar">SK</div>
+          <div><strong id="userName">Sana Khan</strong><small id="userRole">Secure session</small></div>
+          <span class="status-dot" title="API connected"></span>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="mobile-header">
+          <a class="brand" href="#home"><span class="brand-mark">R</span><strong>RAHAT</strong></a>
+          <button class="icon-button" id="menuButton" aria-label="Open navigation" aria-expanded="false">☰</button>
+        </header>
+        <main id="view" tabindex="-1" aria-live="polite"></main>
+      </div>
+    </div>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+    <dialog id="modal" class="modal">
+      <form method="dialog" class="modal-card" id="modalForm">
+        <div class="modal-header">
+          <div><p class="eyebrow" id="modalEyebrow">New record</p><h2 id="modalTitle">Register family</h2></div>
+          <button class="icon-button" type="button" data-action="close-modal" aria-label="Close dialog">×</button>
+        </div>
+        <div id="modalBody"></div>
+      </form>
+    </dialog>
+
+    <template id="loadingTemplate">
+      <section class="page loading-page">
+        <div class="skeleton skeleton-title"></div>
+        <div class="stat-grid">
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+        </div>
+        <div class="skeleton skeleton-panel"></div>
+      </section>
+    </template>
+  </body>
+</html>
